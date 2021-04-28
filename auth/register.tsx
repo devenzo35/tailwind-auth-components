@@ -1,7 +1,6 @@
-import react, { useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { types } from "../../redux/types";
 
 interface formData {
   name: string;
@@ -11,15 +10,20 @@ interface formData {
 }
 
 export default function register() {
-  const { register, handleSubmit, watch, errors, reset } = useForm<formData>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    reset,
+  } = useForm<formData>();
 
   const passwordValue = watch("password");
 
   const handleGoogle = () => {
-    //Google sing in with Firebase
+    //Google sign in
     try {
-      //import your firebase app
-      firebase.auth().signInWithPopup("google provider goes here");
+      //Handle Google sign in
     } catch (err) {
       console.log(err);
     }
@@ -41,7 +45,7 @@ export default function register() {
         <div>
           <img
             className="mx-auto h-36 w-auto"
-            src="/undraw_Work_chat_re_qes4.svg"
+            src="./assets/undraw_Work_chat_re_qes4.svg"
             alt="Workflow"
           ></img>
           <h2 className="mt-6 text-center text-2xl font-extrabold text-gray-900">
@@ -63,7 +67,7 @@ export default function register() {
                 <input
                   id="name"
                   name="name"
-                  ref={register({
+                  {...register("name", {
                     required: true,
                     pattern: /[A-Za-z0-9_]{3,15}/,
                   })}
@@ -87,7 +91,7 @@ export default function register() {
                 <input
                   id="email-address"
                   name="email"
-                  ref={register({
+                  {...register("email", {
                     required: true,
                     pattern: /[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})/i,
                   })}
@@ -114,7 +118,7 @@ export default function register() {
                 <input
                   id="password"
                   name="password"
-                  ref={register({
+                  {...register("password", {
                     required: true,
                     pattern: /[A-Za-z0-9_]{8,50}/,
                   })}
@@ -140,7 +144,7 @@ export default function register() {
                 <input
                   id="password2"
                   name="password2"
-                  ref={register({
+                  {...register("password2", {
                     required: true,
                     pattern: /[A-Za-z0-9_]{8,50}/,
                     validate: (value) => value === passwordValue,
@@ -188,7 +192,7 @@ export default function register() {
               <b style={{ position: "relative" }}>Google</b>
             </button>
             <div className="text-sm">
-              <a href="/auth/login">Do you already have an account?</a>
+              <Link href="/auth/login">Do you already have an account?</Link>
             </div>
           </div>
 

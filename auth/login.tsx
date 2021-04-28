@@ -1,7 +1,6 @@
-import react, { useEffect } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
-import { useSelector, useDispatch } from "react-redux";
 
 interface formData {
   name: string;
@@ -11,13 +10,18 @@ interface formData {
 }
 
 function login() {
-  const { register, handleSubmit, watch, errors, reset } = useForm<formData>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    reset,
+  } = useForm<formData>();
 
   const handleGoogle = () => {
-    //Google sing in with Firebase
+    //Google sign in
     try {
-      //import your firebase app
-      firebase.auth().signInWithPopup("google provider goes here");
+      //Handle Google sign in
     } catch (err) {
       console.log(err);
     }
@@ -39,7 +43,7 @@ function login() {
         <div>
           <img
             className="mx-auto h-36 w-auto"
-            src="/undraw_begin_chat_c6pj.svg"
+            src="./assets/undraw_begin_chat_c6pj.svg"
             alt="Workflow"
           ></img>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
@@ -64,7 +68,7 @@ function login() {
                   name="email"
                   type="email"
                   autoComplete="email"
-                  ref={register({
+                  {...register("email", {
                     required: true,
                     pattern: /[a-z0-9]+(\.[_a-z0-9]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,15})/i,
                   })}
@@ -88,7 +92,7 @@ function login() {
                   id="password"
                   name="password"
                   type="password"
-                  ref={register({
+                  {...register("password", {
                     required: true,
                     pattern: /[A-Za-z0-9_]{8,50}/,
                   })}
@@ -133,7 +137,7 @@ function login() {
             </button>
 
             <div className="text-sm">
-              <a href="/auth/register">Don't have an account yet?</a>
+              <Link href="/auth/register">Don't have an account yet?</Link>
             </div>
           </div>
 
